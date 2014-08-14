@@ -1,0 +1,51 @@
+KISS
+
+URL生成器:
+url($controller='Index',$action='index',$params=array(),$mode=0);
+
+筛选器越早执行越好，方法筛选器、类筛选器
+
+根据url分析类名，再根据类名找类文件，如/index.php?c=index&a=add  ===>  Controller_Index_Add  ===>  controller/index/add.php
+
+不同的类自动加载(auto_load)策略？策略模式
+
+isset()的bug：$str='abc';isset($str['anything'])的值永远为真,$str['anything']==$str[0];
+
+配置文件写入MC会比每次从文件读快么？其它方案呢？
+
+框架生成器：parser/filter/router/loader策略模式，core的策略可替换
+
+parser负责解析URL，得到controller/action
+router执行parser解析出来的controller、action
+loader负责类自动加载
+filter筛选器，负责拦截parser/router/controller的行为
+
+Controller类提供getFilters()方法返回这个过滤器数组即可，供Santa_App读取，用户可自己实现
+
+上下文环境类或直接在Santa_App类中实现
+
+安全性，url解析时、
+
+两套内核代码，开发环境使用完全版full，生产环境使用精简版lite
+
+检查代码中是否有的地方可以被内核函数代替
+
+使用函数内部变量效率比使用类变量或其它形式的变量高，给类变量赋值时，应使用函数变量进行计算，最后再赋值
+
+开关开关开关010101
+
+/* 
+		 * 在执行controller的action之前执行某些筛选行为，以下注释部分为filter函数带参数实现
+		 */
+		/* if (self::$_settings ['enable_action_filters']) {
+			$filters = $cls->filters ( $func [1] );
+			if (! empty ( $filters )) {
+				foreach ( $filters as $k => $v ) {
+					if (! is_callable ( array ($cls, $k ), false )) {
+						throw new Exception ( "filter $controller:$k not exists or not a public method" );
+					}
+					call_user_func_array ( array ($cls, $k ), $v [1] );
+				}
+			}
+		} */
+
